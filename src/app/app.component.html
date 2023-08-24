@@ -1,0 +1,15 @@
+
+<div class="panel" [ngClass]="{ 'panel-collapsed': panelCollapsed }">
+  <div class="panel-heading">
+    <span class="icon_minim" (click)="togglePanel()"></span>
+  </div>
+  <div class="panel-body" [ngStyle]="{ 'display': panelCollapsed ? 'none' : 'block' }">
+    <!-- Contenu du corps du panneau -->
+    <input class="chat_input" (focus)="focusInput()" />
+  </div>
+  <div class="panel-footer">
+    <button id="new_chat" (click)="createNewChat()">New Chat</button>
+    <span class="icon_close" (click)="closeChat()"></span>
+  </div>
+</div>
+
