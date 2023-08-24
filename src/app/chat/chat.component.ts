@@ -3,10 +3,12 @@ import { ChatService } from '../chat-service.service';
 import { Message } from '../message.model';
 
 
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
+  
 })
 
 

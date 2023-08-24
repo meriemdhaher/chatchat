@@ -18,9 +18,14 @@ export class ChatService {
   // TODO : create ClietHttp service to consule back response
   messageMap: any = {
     "Hi": "Hello",
-    "Who are you": "My name is Agular Bot",
-    "What is Angular": "Angular is the best framework ever",
-    "default": "I can't understand. Can you please repeat"
+    "ASSOCIATION": "Welcome to the Association section",
+    "ENTREPRISE":"Welcome to the entreprise section",
+    "Who are you": "I'm RSE TIME Bot",
+    "What is RSE": "Corporate Social Responsibility (CSR) / Responsabilité Sociale des Entreprises (RSE): This is a business approach that aims to contribute positively to society and the environment. It involves companies taking responsibility for their impact on various aspects of society, including economic, social, and environmental aspects. CSR or RSE initiatives might include ethical business practices, sustainability efforts, community engagement, and more.",
+    "Tell me more about your platform and your interests.": "We are a platform that connects associations and businesses. We have 17 axes.",
+    "More": "To learn more details, we will connect you with one of our experts. Please send us your email for us to contact you as soon as possible.",
+    "default": "I can't understand. We will connect you with an expert from the team."
+    
   }
 
   getBotAnswer(msg: string) {

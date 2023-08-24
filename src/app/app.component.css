@@ -1,229 +1,103 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
 
+/* Chat Button */
 #chat-button {
   position: fixed;
-  width: 112px;
-  height: 140px;
   bottom: 12px;
+  right: 0;
   display: flex;
-  -webkit-box-align: center;
   align-items: center;
-  -webkit-box-pack: center;
   justify-content: center;
   pointer-events: none;
   z-index: 1;
-  right: 0px;
+  width: 112px;
+  height: 140px;
 }
 
-#chat-button:not(.sidebar) .buttonWave {
-  position: absolute;
-  z-index: -1;
-  width: 60px;
-  height: 60px;
-}
+/* ... (votre code existant pour le bouton) ... */
 
-  #chat-button:not(.sidebar).clicked .buttonWave::after {
-      animation: 0.5s ease-out 0s 1 normal none running buttonWave;
-  }
-
-  #chat-button:not(.sidebar) .buttonWave::after {
-      content: "";
-      position: absolute;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background-color: rgb(20, 127, 255);
-      opacity: 0.5;
-  }
-
-#button-body {
-  width: 60px;
-  height: 60px;
-  border-radius: 28px;
-  display: inherit;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
-  pointer-events: initial;
-  background-size: 130% 130%;
-  transition: all 0.2s ease-in-out 0s;
-  position: relative;
-  color: rgb(0, 125, 252);
-  border: 1px solid #1E88E5;
-}
-
-  #button-body::before {
-      content: "";
-      transition: opacity 0.5s ease-in-out 0s;
-      position: absolute;
-      inset: -1px;
-      border-radius: 50%;
-      background-color:#009970;
-  }
-
-#chat-button button i.for-closed.active {
-  transform: translateX(0px);
-}
-
-#chat-button button i.for-closed {
-  transform: translateX(-10px);
-}
-
-#chat-button button i.active {
-  opacity: 1;
-}
-
-#chat-button button i {
-  height: 26px;
-  width: 26px;
-  position: absolute;
-  opacity: 0;
-  transition: all 0.2s ease-in-out 0s;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  /* justify-content: center; */
-}
-
-i {
-  user-select: none;
-}
-
-
-
-#chat-button button i.for-closed.active {
-  transform: translateX(0px);
-}
-
-#chat-button button i.for-closed {
-  transform: translateX(-10px);
-}
-
-#chat-button button i.type2 {
-  width: 32px;
-  height: 32px;
-}
-
-#button button i.type1.for-opened {
-  width: 31px;
-  height: 28px;
-}
-
-#chat-button button i.for-opened {
-  transform: translateX(10px);
-}
-
-button, button.material-icons {
-  background: none;
-  border: 0px;
-  color: inherit;
-  font-style: inherit;
-  font-variant: inherit;
-  font-weight: inherit;
-  font-stretch: inherit;
-  font-size: inherit;
-  font-family: inherit;
-  line-height: normal;
-  overflow: visible;
-  padding: 0px;
-  user-select: none;
-  outline: none;
-  cursor: pointer;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-
-
-#chat-button button i.type2 svg {
-  width: 32px;
-  height: 32px;
-  fill: rgb(0, 125, 252);
-  transform: scale(0);
-}
-
-svg:not(:root) {
-  overflow-clip-margin: content-box;
-  overflow: hidden;
-}
-
-#button-body {
-  box-shadow: rgba(0, 77, 255, 0.5) 0px 4px 24px;
-}
-
-body:not(.mobile) #button button:not(.disabled):hover i.type1 svg, body:not(.mobile) #button button:not(.disabled):focus i.type1 svg {
-  transform: scale(1.4);
-}
-
-body:not(.mobile) #button button:not(.disabled):hover i.type1::after, body:not(.mobile) #button button:not(.disabled):focus i.type1::after {
-  transform: scale(1);
-}
-
-#chat-button button i.for-closed.active {
-  transform: translateX(0px);
-}
-
-/**********************************/
-
-.button {
-  margin-right: 20px;
-}
-.button-active {
-  background-color: #9b4dca;
-  color: white;
-}
-.button-active:hover,
-.button-active:focus {
-  background-color: #9b4dca;
-  border-color: #9b4dca;
-  color: #fff;
-}
-
-h4 {
-  margin-top: 15px;
-  margin-left: 7px;
-}
-.top-bar {
-  margin: 25px 0px;
-}
-.message {
-  border-radius: 20px;
-  margin: 5px 5px 7px;
-  padding: 3px 7px;
-  position: relative;
-  font-size: 18px;
-  display: inline-block;
-}
-.message.to {
-  background-color: #2095fe;
-  color: #fff;
-  margin-left: 100px;
-  text-align: left;
-  float: right;
-  /*margin: 5px 200px 15px;*/
-  /*width: calc(var(--size) + 2ch)*/
-}
-.message.from {
-  background-color: #e5e4e9;
-  color: #363636;
-  margin-right: 100px;
-  text-align: left;
-}
-.message.to + .message.to,
-.message.from + .message.from {
-  margin-top: 10px;
-}
-.click-button {
-  position: absolute;
-  right: 40px;
-  bottom: 30px;
-}
+/* Chat Box */
 .chatbox {
   width: 300px;
   height: 80vh;
-  margin: 5px 5px 7px;
+  margin: 5px;
   position: fixed;
   bottom: 100px;
   right: 10px;
   border: 3px solid #f1f1f1;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
   overflow: scroll;
+}
+
+.chatbox nav {
+  padding: 10px;
+  color: #ffffff; /* Couleur du texte du navbar */
+  text-align: center;
+  background-color: #49a846; /* Couleur de fond du navbar */
+}
+
+/* Chat Messages */
+.message {
+  border-radius: 20px;
+  margin: 5px 5px 7px;
+  padding: 3px 7px;
+  font-size: 18px;
+  max-width: 80%;
+}
+
+.message.from {
+  background-color: #e5e4e9;
+  color: #363636;
+  margin-right: auto;
+  text-align: left;
+  float: left;
+}
+
+.message.to {
+  background-color: #2095fe;
+  color: #fff;
+  margin-left: auto;
+  text-align: right;
+  float: right;
+}
+
+/* Input and Send Button */
+input[type="text"] {
+  padding: 10px;
+  width: 80%;
+  border: none;
+  border-top: 1px solid #ccc;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button {
+  background-color: #49a846; /* Couleur de fond des boutons */
+  color: #ffffff; /* Couleur du texte des boutons */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  
+}
+
+button:hover {
+  background-color: #398c3a; /* Couleur de fond au survol des boutons */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  /* ... (votre code existant pour les styles responsives) ... */
+}
+
+/* Animation for the buttonWave */
+@keyframes buttonWave {
+  /* ... (votre code existant pour l'animation) ... */
 }

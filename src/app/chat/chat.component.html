@@ -1,47 +1,62 @@
-<body>
-  <div>
-    <!-- Bouton de la bulle de discussion -->
-<button id="chat-button" (click)="openChatBot()" class="chat-closed mobile-size__medium">
-  <div class="buttonWave"></div>
-  <button type="button"
-          id="button-body"
-          data-testid="widgetButtonBody"
-          class="chrome"
-          tabindex="0"
-          aria-label="Open chat widget">
-    <i class="material-icons type1 for-closed active" [style.color]="'rgb(255, 255, 255)'">
-      <svg id="ic_bubble" fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"></path>
-        <path d="M0 0h24v24H0z" fill="none"></path>
-      </svg>
-    </i>
+<div>
+  <!-- Chat Button -->
+  <button id="chat-button" (click)="openChatBot()" class="chat-closed mobile-size__medium">
+    <div class="buttonWave"></div>
+    <button type="button" id="button-body" data-testid="widgetButtonBody" class="chrome" tabindex="0" aria-label="Open chat widget">
+      <i class="material-icons type1 for-closed active" [style.color]="'rgb(255, 255, 255)'">
+        <svg id="ic_bubble" fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"></path>
+          <path d="M0 0h24v24H0z" fill="none"></path>
+        </svg>
+      </i>
+    </button>
   </button>
-</button>
+</div>
+
+<!-- Chatbox -->
+<div *ngIf="isActivateChat" class="chatbox">
+  <nav style=" background-color: #49a846; /* Couleur de fond des boutons */
+  color: #ffffff; /* Couleur du texte des boutons */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;"
+  class="widget-background-panel" role="banner">RSE TIME CHAT</nav>
+
+  <!-- Chat Messages -->
+  <div class="message from">
+    HELLO 👋
   </div>
 
-<!-- content of discussion -->
-  <div *ngIf="isActivateChat" class="chatbox">
-    <h4>Chat With Me</h4>
-    <ng-container *ngFor="let message of messages">
-      <div
-        class="message"
-        [ngClass]=" 
-        {
-          from: message.author === 'bot',
-          to: message.author === 'user'
-        }
-        "
-      >
-        <span> {{ message.content }} </span>
-      </div>
-    </ng-container>
-    <input
-      [(ngModel)]="value"
-      (keyup.enter)="sendMessage()"
-      type="text"
-      placeholder="type here"
-    />
-    <button (click)="sendMessage()">Send</button>
+  <div class="message from">
+    You are
   </div>
 
-</body>
+  <div class="message form">
+    <button (click)="sendMessage()" style=" background-color: #49a846; /* Couleur de fond des boutons */
+    color: #ffffff; /* Couleur du texte des boutons */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;"
+    class="button">ASSOCIATION</button> <br>
+    <br>
+    <button style=" background-color: #49a846; /* Couleur de fond des boutons */
+    color: #ffffff; /* Couleur du texte des boutons */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;"
+     class="button">ENTREPRISE</button>
+  </div>
+
+  <!-- Existing message loop -->
+  <ng-container *ngFor="let message of messages">
+    <div class="message" [ngClass]="{ from: message.author === 'bot', to: message.author === 'user' }">
+      <span>{{ message.content }}</span>
+    </div>
+  </ng-container>
+
+  <!-- Input and Send Button -->
+  <input [(ngModel)]="value" (keyup.enter)="sendMessage()" type="text" placeholder="Type here" />
+  <button style=" background-color: #49a846; 
+  color: #ffffff;" 
+  (click)="sendMessage()"> Send </button>
+</div>
