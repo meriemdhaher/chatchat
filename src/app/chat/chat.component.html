@@ -32,19 +32,14 @@
   </div>
 
   <div class="message form">
-    <button (click)="sendMessage()" style=" background-color: #49a846; /* Couleur de fond des boutons */
-    color: #ffffff; /* Couleur du texte des boutons */
-    border: none;
-    padding: 10px 20px;
-    border-radius: 30px;"
-    class="button">ASSOCIATION</button> <br>
+    <button (click)="clickEvent(ASSOCIATION_LABEL)"
+            class="suggestion-btn">ASSOCIATION</button> <br>
     <br>
-    <button style=" background-color: #49a846; /* Couleur de fond des boutons */
-    color: #ffffff; /* Couleur du texte des boutons */
-    border: none;
-    padding: 10px 20px;
-    border-radius: 30px;"
-     class="button">ENTREPRISE</button>
+    <button 
+    class="suggestion-btn"
+     (click)="clickEvent(ENTREPRISE_LABEL)">
+      ENTREPRISE
+    </button>
   </div>
 
   <!-- Existing message loop -->
@@ -54,9 +49,19 @@
     </div>
   </ng-container>
 
-  <!-- Input and Send Button -->
-  <input [(ngModel)]="value" (keyup.enter)="sendMessage()" type="text" placeholder="Type here" />
-  <button style=" background-color: #49a846; 
-  color: #ffffff;" 
-  (click)="sendMessage()"> Send </button>
+  <div class="flex-container"  *ngIf="!isLoading">
+ <!-- Input and Send Button -->
+ <input mdbInput type="text" 
+        id="form1" 
+        class="form-control" 
+        [(ngModel)]="value" 
+        (keyup.enter)="sendMessage()" 
+        type="text" 
+        placeholder="Type here"/>
+
+ <button class="send-btn" 
+         (click)="sendMessage()"> 
+         Send 
+</button>
+  </div>
 </div>

@@ -14,9 +14,13 @@ import { Message } from '../message.model';
 
 export class ChatComponent implements OnInit {
   
+  readonly ENTREPRISE_LABEL = 'entreprise';
+  readonly ASSOCIATION_LABEL = 'association';
   isActivateChat: boolean = false;
+  isLoading: boolean = false;
   messages: Message[] = [];
   value = '';
+  
 
   constructor(public chatService: ChatService) { }
 
@@ -24,15 +28,25 @@ export class ChatComponent implements OnInit {
   ngOnInit() {
     this.chatService.conversation.subscribe((val) => {
     this.messages = this.messages.concat(val);
+    this.chatService.isLoading.subscribe((loadingFlag) => {
+      this.isLoading = loadingFlag;
+    })
   });
 }
 
-  openChatBot(): void {
+  openChatBot(): void { 
     this.isActivateChat =! this.isActivateChat;
   }
 
   sendMessage(): void {
-    this.chatService.getBotAnswer(this.value);
-    this.value = '';
+    if(this.value !== '') {
+      this.chatService.getBotAnswer(this.value);
+      this.value = '';
+    }
   }
+
+  clickEvent(event: string) {
+    this.chatService.getBotAnswer(event.toUpperCase());
+    }
+  
 }

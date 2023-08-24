@@ -1,6 +1,4 @@
 import { Injectable } from "@angular/core";
-import {HttpClient} from '@angular/common/http';
-import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject, Subject } from "rxjs";
 
 export class Message {
@@ -9,11 +7,12 @@ export class Message {
 
 @Injectable({
   providedIn: 'root'
-
 })
 
 export class ChatService {
+
   conversation = new Subject<Message[]>();
+  isLoading = new BehaviorSubject<boolean>(false);
   
   // TODO : create ClietHttp service to consule back response
   messageMap: any = {
@@ -29,12 +28,14 @@ export class ChatService {
   }
 
   getBotAnswer(msg: string) {
+    this.isLoading.next(true);
     const userMessage = new Message('user', msg);  
     this.conversation.next([userMessage]);
     const botMessage = new Message('bot', this.getBotMessage(msg));
     
-    setTimeout(()=>{
+    setTimeout(() => { 
       this.conversation.next([botMessage]);
+      this.isLoading.next(false);
     }, 1500);
   }
 
