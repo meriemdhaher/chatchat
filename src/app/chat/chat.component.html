@@ -1,78 +1,14 @@
-<!-- Chatbot interface -->
-
-<div class="chat-board chatbot chat new trending"></div>
-<div class="frame-content">
-  <div class="widget-position-right sidebar-position-right onlyBubble" id="chatContainer">
-
-    <div class="chat no-clip-path chrome moveFromRight-enter-done">
-      <div class="chat-header project-online" [style.background-color]="'#009970'">
-        <h2 class="oneline"><span>RSE TIME CHAT</span></h2>
-        <button class="material-icons exit-chat ripple tidio-1s5t5ku" id="minimize-button" type="button" aria-label="Minimize" [style.color]="'rgb(255, 255, 255)'">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" id="ic-minimize">
-            <path d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"></path>
-          </svg>
-          <span>Minimize</span>
-        </button>
-        <div class="offline-message" [style.background-color]="'#ffffffc2'">
-          <span class="online"><span>We are online</span></span>
-        </div>
-      </div>
-      <br>
-      <br>
-      <!-- Rest of the content goes here -->
-    </div>
-
-  </div>
-</div>
-<div id="chat-container">
-  <form id="choice-form">
-    <button type="button" id="entreprise-button" style="background-color: aquamarine;">Entreprise</button> &nbsp;
-
-    <button type="button" id="association-button"  style="background-color: aquamarine;">Association</button>
-  </form>
-
-  <div id="chat-display"></div>
-  <input type="text" id="chat-input" placeholder="Type your message..." />
-
-  <!-- Utilisation de la propriété [src] pour l'icône d'envoi -->
-  <button id="send-button">
-    <img [src]="imagePath" alt="Send">
-  </button>
-</div>
-
-<div class="input-group ">
-  <hr>
-</div>
-<div id="chat-button" data-testid="widgetButton" class="chat-closed mobile-size__medium">
+<body>
+  <div>
+    <!-- Bouton de la bulle de discussion -->
+<button id="chat-button" (click)="openChatBot()" class="chat-closed mobile-size__medium">
   <div class="buttonWave"></div>
   <button type="button"
           id="button-body"
           data-testid="widgetButtonBody"
           class="chrome"
           tabindex="0"
-          aria-label="Open chat widget"
-          [style.background]="gradientStyle"
-          [style.box-shadow]="boxShadowStyle">
-    <i class="material-icons type1 for-closed active" [style.color]="'rgb(255, 255, 255)'">
-      <svg id="ic_bubble" fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"></path>
-        <path d="M0 0h24v24H0z" fill="none"></path>
-      </svg>
-    </i>
-  </button>
-</div>
-<!-- Bouton de la bulle de discussion -->
-<button id="chat-button" (click)="toggleChatContainer()" class="chat-closed mobile-size__medium">
-  <div class="buttonWave"></div>
-  <button type="button"
-          id="button-body"
-          data-testid="widgetButtonBody"
-          class="chrome"
-          tabindex="0"
-          aria-label="Open chat widget"
-          [style.background]="gradientStyle"
-          [style.box-shadow]="boxShadowStyle">
+          aria-label="Open chat widget">
     <i class="material-icons type1 for-closed active" [style.color]="'rgb(255, 255, 255)'">
       <svg id="ic_bubble" fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"></path>
@@ -81,21 +17,31 @@
     </i>
   </button>
 </button>
-<!-- Contenu de la zone de discussion -->
-<div class="frame-content" [class.open]="chatContainerOpen">
-  <div class="widget-position-right sidebar-position-right onlyBubble" id="chatContainer">
-
-    <div class="chat no-clip-path chrome moveFromRight-enter-done">
-      <!-- Le reste du contenu de la discussion -->
-    </div>
   </div>
-</div>
 
+<!-- content of discussion -->
+  <div *ngIf="isActivateChat" class="chatbox">
+    <h4>Chat With Me</h4>
+    <ng-container *ngFor="let message of messages">
+      <div
+        class="message"
+        [ngClass]=" 
+        {
+          from: message.author === 'bot',
+          to: message.author === 'user'
+        }
+        "
+      >
+        <span> {{ message.content }} </span>
+      </div>
+    </ng-container>
+    <input
+      [(ngModel)]="value"
+      (keyup.enter)="sendMessage()"
+      type="text"
+      placeholder="type here"
+    />
+    <button (click)="sendMessage()">Send</button>
+  </div>
 
-
-
-
-
-
-
-
+</body>

@@ -10,17 +10,13 @@ import { ChatService } from '../app/chat-service.service';
   declarations: [
     ChatComponent,
     AppComponent,
-   
-    
-    
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    AppRoutingModule,
-    
+    AppRoutingModule
   ],
-  providers: [ ChatService],
-  bootstrap: [ChatComponent]
+  providers: [],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
