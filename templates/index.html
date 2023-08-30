@@ -2,7 +2,31 @@
 <html>
 <head>
     <style>
-
+        /* Alignement du message de bienvenue */
+        .message {
+            justify-content: flex-start;
+        }
+        
+        /* Style de l'image utilisateur */
+        .message img {
+            width: 30px; /* Ajustez la taille de l'image selon vos besoins */
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px; /* Espace entre l'image et le texte */
+        }
+        
+        /* Style du contenu du message */
+        .message .message-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            line-height: 20px;
+            background: rgb(240, 242, 247);
+            padding: 10px 16px;
+            border-radius: 20px;
+            margin: 2px 0px;
+        }
 
 
         #chat-display {
@@ -278,19 +302,23 @@
         }
 
         .message {
-            padding: 10px 16px;
-            border-radius: 20px;
-            margin: 2px 0px;
-            font-size: 15px;
-            line-height: 20px;
-            overflow-wrap: break-word;
-            display: inline-block;
-            max-width: 85%;
-            clear: both;
-            position: relative;
-            transition: margin 0.28s ease-in-out 0s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
         }
-
+        .bot {
+            justify-content: flex-start;
+        }
+        .user {
+            justify-content: flex-end;
+        }
+        .message img {
+            width: 30px; /* Ajustez la taille de l'icône selon vos besoins */
+            height: 30px;
+            border-radius: 50%; /* Pour rendre l'icône circulaire */
+        }
+        
         .input-group {
             padding: 0px 28px 6px;
             width: 100%;
@@ -675,6 +703,25 @@
         .svgsent svg path {
             fill: #1775ec;
         }
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .buttons-container button {
+            margin: 0 10px;
+            padding: 5px 15px;
+            border: none;
+            background-color: #009970;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .buttons-container button:hover {
+            background-color: #007c5f;
+        }
 
     </style>
 </head>
@@ -682,259 +729,293 @@
 <body>
 <!---Chat Board Start-->
 <div class="chat-board chatbot chat new trending"></div>
-    <div class="frame-content">
-        <div class="widget-position-right sidebar-position-right onlyBubble" id="chatContainer">
-
-            <div class="chat no-clip-path chrome moveFromRight-enter-done">
-                <div class="chat-header project-online" style=" background-color: #009970;">
-                    <h2 class="oneline"><span>VERMEG</span></h2>
-                    <button class="material-icons exit-chat ripple tidio-1s5t5ku" id="minimize-button" type="button" aria-label="Minimize" style="color: rgb(255, 255, 255);">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" id="ic-minimize">
-                            <path d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"></path>
-                        </svg>
-                        <span>Minimize</span>
-                    </button>
-                    <div class="offline-message" style="background-color: #ffffffc2">
-                        <span class="online"><span>We are online</span></span>
-                    </div>
-
-
-                    
-
+<div class="frame-content">
+    <div class="widget-position-right sidebar-position-right onlyBubble" id="chatContainer">
+        <div class="chat no-clip-path chrome moveFromRight-enter-done">
+            <div class="chat-header project-online" style="background-color: #009970;">
+                <h2 class="oneline"><span>VERMEG</span></h2>
+                <button class="material-icons exit-chat ripple tidio-1s5t5ku" id="minimize-button" type="button" aria-label="Minimize" style="color: rgb(255, 255, 255);">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" id="ic-minimize">
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"></path>
+                    </svg>
+                    <span>Minimize</span>
+                </button>
+                <div class="offline-message" style="background-color: #ffffffc2">
+                    <span class="online"><span>We are online</span></span>
                 </div>
-                <br>
-                <br>
-
-
-
-
-
-                <div id="chat-container">
-                    <form id="choice-form">
-                        <button type="button" id="entreprise-button">Entreprise</button>
-                        <button type="button" id="association-button">Association</button>
-                    </form>
-    
-                    <div id="chat-display"></div>
-                    <input type="text" id="chat-input" placeholder="Type your message..." />
+            </div>
+            <br>
+            <br>
+            
+            <div id="chat-container">
+                <form id="choice-form"></form>
+                <div id="chat-display">
                     
-                    <!-- Utilisation de l'attribut src pour l'icône d'envoi -->
-                    <button id="send-button">
+                </div>
+                <div class="user-input">
+                    <input type="text" id="chat-input" placeholder="Saisissez votre message...">
+                    <button class="send-button" id="send-button">
                         <img src="{{ url_for('static', filename='send-icon.png') }}" alt="Send">
                     </button>
                 </div>
-
-
-                <div class="input-group ">
+            </div>
+        
+                <div class="input-group">
                     <hr>
-                    
-
-
                 </div>
             </div>
-
         </div>
         <div id="chat-button" data-testid="widgetButton" class="chat-closed mobile-size__medium">
             <div class="buttonWave"></div>
-            <button type="button"
-                    id="button-body"
-                    data-testid="widgetButtonBody"
-                    class="chrome"
-                    tabindex="0"
-                    aria-label="Open chat widget"
-                    style="background: linear-gradient(135deg, rgb(42, 39, 218), rgb(0, 204, 255)); box-shadow: rgba(0, 77, 255, 0.5) 0px 4px 24px;">
+            <button type="button" id="button-body" data-testid="widgetButtonBody" class="chrome" tabindex="0" aria-label="Open chat widget" style="background: linear-gradient(135deg, rgb(42, 39, 218), rgb(0, 204, 255)); box-shadow: rgba(0, 77, 255, 0.5) 0px 4px 24px;">
                 <i class="material-icons type1 for-closed active" style="color: rgb(255, 255, 255);">
                     <svg id="ic_bubble" fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"></path>
                         <path d="M0 0h24v24H0z" fill="none"></path>
                     </svg>
                 </i>
-               
             </button>
         </div>
     </div>
-
-
     <script>
         const chatDisplay = document.getElementById('chat-display');
-        const userInputElement = document.getElementById('chat-input');
+        const chatInput = document.getElementById('chat-input');
+        const chatButton = document.getElementById('chat-button');
+        const chatContainer = document.getElementById('chatContainer');
+        const minimizeButton = document.getElementById('minimize-button');
         const sendButton = document.getElementById('send-button');
-    
-        // Récupérer l'ID utilisateur, par exemple, à partir d'une variable Flask dans le modèle
         const userId = '{{ user_id }}'; // Remplacez par la valeur réelle
-    
-        sendButton.addEventListener('click', () => {
-            const userInput = userInputElement.value;
-            if (userInput !== '') {
-                appendMessage('You', userInput);
-                userInputElement.value = '';
-                getBotResponse(userInput);
+        
+        chatButton.addEventListener('click', () => {
+            chatContainer.classList.add('open');
+            chatButton.classList.add('clicked');
+            const buttonsDiv = document.createElement('div');
+            buttonsDiv.classList.add('buttons-container');
+        
+            const entrepriseButton = document.createElement('button');
+            entrepriseButton.id = 'entreprise-button';
+            entrepriseButton.textContent = 'Entreprise';
+            entrepriseButton.addEventListener('click', () => {
+                hideChoiceButtons();
+                appendMessage('You', 'Entreprise', false);
+                sendChoice('entreprise');
+            });
+            buttonsDiv.appendChild(entrepriseButton);
+        
+            const associationButton = document.createElement('button');
+            associationButton.id = 'association-button';
+            associationButton.textContent = 'Association';
+            associationButton.addEventListener('click', () => {
+                hideChoiceButtons();
+                appendMessage('You', 'Association', false);
+                sendChoice('association');
+            });
+            
+            buttonsDiv.appendChild(associationButton);
+        
+            chatDisplay.appendChild(buttonsDiv);
+        });
+        
+        minimizeButton.addEventListener('click', () => {
+            chatContainer.classList.remove('open');
+            chatButton.classList.remove('clicked');
+        });
+        
+        
+        chatInput.addEventListener('input', () => {
+            if (chatInput.value) {
+                sendButton.classList.add('svgsent');
+            } else {
+                sendButton.classList.remove('svgsent');
             }
         });
-    
-        function appendMessage(sender, message) {
-            const messageElement = document.createElement('div');
-            messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
-            chatDisplay.appendChild(messageElement);
+        
+        let isEnterPressed = false;
+
+        chatInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter' && !isEnterPressed) {
+                isEnterPressed = true;
+                const userInput = chatInput.value;
+                if (userInput !== '') {
+                    appendMessage('You', userInput);
+                    chatInput.value = '';
+                    getBotResponse(userInput);
+                    sendButton.classList.add('svgsent');
+                }
+            }
+        });
+        
+        chatInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                isEnterPressed = false;
+            }
+        });
+        
+        
+        function appendMessage(sender, message, isBot) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', isBot ? 'bot' : 'user');
+            const iconElement = document.createElement('img');
+            iconElement.src = isBot ? 'static/avatar.jpg' : 'static/avatar.jpg';
+            iconElement.alt = sender;
+            const textElement = document.createElement('div');
+            textElement.classList.add('message-content');
+            textElement.textContent = message;
+            messageDiv.appendChild(iconElement);
+            messageDiv.appendChild(textElement);
+            chatDisplay.appendChild(messageDiv);
             chatDisplay.scrollTop = chatDisplay.scrollHeight;
-            setTimeout(() => {
-                messageElement.classList.add('show');
-            }, 10);
         }
-    
-        function getBotResponse(userInput) {
-            fetch('/getresponse', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `user_input=${encodeURIComponent(userInput)}&user_id=${userId}`,
-            })
-            .then(response => response.text())
-            .then(botResponse => {
-                appendMessage('VERMEG', botResponse);
-            })
-            .catch(error => console.error(error));
-        }
-    </script>
-    
-   
+        const welcomeMessage = document.createElement('div');
+welcomeMessage.classList.add('message', 'welcome');
+welcomeMessage.innerHTML = `
+    <img src="static/avatar.jpg" alt="User">
+    <span class="message-content">Bonjour 🖐 Merci pour votre visite !
+        Comment notre équipe peut-elle vous aider ?
+        Vous êtes ?</span>
+`;
+chatDisplay.appendChild(welcomeMessage);
+associationButton.addEventListener('click', () => {
+    hideChoiceButtons();
+    appendMessage('You', 'Association', false);
+    sendChoice('association');
+});
+function sendChoice(choice) {
+    hideChoiceButtons(); // Enlever les boutons de choix
 
+    // Traiter le choix de l'utilisateur
+    if (choice === 'association') {
+        // Créer le message de suivi pour l'association
+        const followUpMessage = createBotMessage(
+            'VERMEG',
+            "Merci pour votre réponse, que souhaitez-vous faire ?"
+        );
+        chatDisplay.appendChild(followUpMessage);
 
-    <script>
-        const chatButton = document.getElementById("chat-button");
-        const chatContainer = document.getElementById("chatContainer");
-        const minimizeButton = document.getElementById("minimize-button");
-        const chatInput = document.getElementById("chat-input");
-        const chatMessages = document.getElementById("conversation-group");
+        // Afficher les options pour l'association
+        const optionsDiv = document.createElement('div');
+        optionsDiv.classList.add('options-container');
 
-
-
-        const entrepriseButton = document.getElementById('entreprise-button');
-        const associationButton = document.getElementById('association-button');
-
-        entrepriseButton.addEventListener('click', () => {
-        sendChoice('entreprise');
+        const option1Button = document.createElement("button");
+        option1Button.textContent = "J'ai un problème";
+        option1Button.addEventListener("click", () => {
+            optionsDiv.remove();
+            sendChoice("J'ai un problème");
+            const problemMessage = createBotMessage(
+                'VERMEG',
+                "D'accord, veuillez nous fournir plus de détails sur le problème que vous rencontrez."
+            );
+            chatDisplay.appendChild(problemMessage);
+            const linkMessage = createBotMessage(
+                'VERMEG',
+                '<a href="#">>Demo des assos animée</a>'
+            );
+            chatDisplay.appendChild(linkMessage);
         });
 
-        associationButton.addEventListener('click', () => {
-        sendChoice('association');
+        optionsDiv.appendChild(option1Button);
+
+        const option2Button = document.createElement("button");
+        option2Button.textContent = "Je souhaite publier une mission pour entreprise";
+        option2Button.addEventListener("click", () => {
+            optionsDiv.remove();
+            sendChoice("Je souhaite publier une mission pour entreprise");
+            const problemMessage = createBotMessage(
+                'VERMEG',
+                "Super ! Veuillez nous donner plus d'informations sur la mission que vous souhaitez publier."
+            );
+            chatDisplay.appendChild(problemMessage);
+            const linkMessage = createBotMessage(
+                'VERMEG',
+                '<a href="#">>Demo des assos animée</a>'
+            );
+            chatDisplay.appendChild(linkMessage);
         });
 
-    function sendChoice(choice) {
-    fetch('/make_choice', {  // Assurez-vous que l'URL correspond à la route dans votre application Flask
+        optionsDiv.appendChild(option2Button);
+        const option3Button = document.createElement("button");
+        option3Button.textContent = "Je souhaite être formé à l'utilisation de RSETime et des fonctionnalités proposées";
+        option3Button.addEventListener("click", () => {
+            optionsDiv.remove();
+            sendChoice("Je souhaite être formé à l'utilisation de RSETime et des fonctionnalités proposées");
+            const trainingMessage = createBotMessage(
+                'VERMEG',
+                "Inscrivez vous à la prochaine démo des assos animée par notre équipe 👋 "
+            );
+            chatDisplay.appendChild(trainingMessage);
+            const linkMessage = createBotMessage(
+                'VERMEG',
+                '<a href="#">Demo des assos animée</a>'
+            );
+            chatDisplay.appendChild(linkMessage);
+        });
+        
+        optionsDiv.appendChild(option3Button);
+        
+        chatDisplay.appendChild(optionsDiv);
+    }else if (choice === 'entreprise') {
+        // Créer les réponses du bot pour l'entreprise
+        const responseMessage1 = createBotMessage(
+            'VERMEG',
+            "Merci de votre intérêt pour notre solution ! Laissez-nous vos coordonnées ci-dessous et un expert RSETime prendra contact avec vous rapidement."
+        );
+        const responseMessage2 = createBotMessage(
+            'VERMEG',
+            '<a href="#">>Demo des assos animée</a>'
+        );
+
+        // Afficher les réponses du bot
+        chatDisplay.appendChild(responseMessage1);
+        chatDisplay.appendChild(responseMessage2);
+    }
+}
+
+
+
+        
+function getBotResponse(choice) {
+    fetch('/getresponse', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: `choice=${encodeURIComponent(choice)}&user_id=${userId}`,
+        body: `user_input=${encodeURIComponent(choice)}&user_id=${userId}`,
     })
     .then(response => response.text())
     .then(botResponse => {
-        appendMessage('VERMEG', botResponse);
+        if (choice !== 'association' && choice !== "entreprise") {
+            // Ne pas afficher la réponse de l'utilisateur si elle est 'association' ou 'entreprise'
+            appendMessage('You', choice);
+        }
+        appendMessage('VERMEG', botResponse, true);
     })
     .catch(error => console.error(error));
 }
-        if (chatButton) {
-            chatButton.addEventListener("click", function () {
-                if (chatContainer) {
-                    chatContainer.classList.add("open");
-                    chatButton.classList.add("clicked");
-                }
-            });
-        }
 
-        if (minimizeButton) {
-            minimizeButton.addEventListener("click", function () {
-                if (chatContainer) {
-                    chatContainer.classList.remove("open");
-                    chatButton.classList.remove("clicked");
-                }
-            });
-        }
-
-        chatInput.addEventListener("input", function (event) {
-            if (event.target.value) {
-                sendButton.classList.add("svgsent");
-            } else {
-                sendButton.classList.remove("svgsent");
-            }
-        });
-
-        chatInput.addEventListener("keypress", function (event) {
-            if (event.key === "Enter") {
-                const userInput = userInputElement.value;
-                if (userInput !== '') {
-                appendMessage('You', userInput);
-                userInputElement.value = '';
-                getBotResponse(userInput);
-                sendButton.classList.add('svgsent');
-            }
-        }
-        });
         
-
-    </script>
-    <script>
-        // Sélectionnez l'élément de chat dans le HTML
-const chatContainer = document.querySelector('.chat-container');
-
-// Fonction pour ajouter un message au chat
-function addMessageToChat(message, sender) {
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('message', sender);
-    // Créez un élément <img> pour afficher l'image
-    const imageElement = document.createElement('img');
-    imageElement.src = sender === 'you' ? 'avatar.jpg' : 'send-icon.png';
-    imageElement.alt = sender;
-
-    // Ajoutez l'élément <img> à la div du message
-    messageDiv.appendChild(imageElement);
-
-    // Ajoutez le texte du message
-    const textElement = document.createElement('div');
-    textElement.textContent = message;
-    messageDiv.appendChild(textElement);
-
-    chatContainer.appendChild(messageDiv);
-}
-
-// Sélectionnez le formulaire d'envoi de message
-const chatForm = document.getElementById('chat-form');
-
-// Écouteur d'événements pour le formulaire d'envoi
-chatForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const userInput = e.target.elements.userInput.value;
-
-    // Envoie de la requête au serveur
-    try {
-        const response = await fetch('/get_response', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `user_input=${encodeURIComponent(userInput)}&user_id=123`, // Remplacez "123" par l'ID de l'utilisateur
-        });
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+        function hideChoiceButtons() {
+            const buttonsDiv = document.querySelector('.buttons-container');
+            if (buttonsDiv) {
+                buttonsDiv.remove();
+            }
         }
-
-        const jsonResponse = await response.json();
-
-        // Affichage de la réponse du bot dans le chat
-        addMessageToChat(jsonResponse.bot_response, 'vermeg'); // Supposons que "vermeg" est la classe CSS pour les messages du bot
-    } catch (error) {
-        console.error('Fetch error:', error);
-    }
-
-    e.target.reset(); // Réinitialisation du formulaire
-});
+        function createBotMessage(sender, message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', 'bot');
+            const iconElement = document.createElement('img');
+            iconElement.src = 'static/avatar.jpg'; // Chemin de l'avatar du bot
+            iconElement.alt = sender;
+            const textElement = document.createElement('div');
+            textElement.classList.add('message-content');
+            textElement.innerHTML = message;
+            messageDiv.appendChild(iconElement);
+            messageDiv.appendChild(textElement);
+            return messageDiv;
+        }
+        
     </script>
-
+    
 </body>
     <!---Chat Board End-->
     </html> 

@@ -47,13 +47,20 @@ def make_choice():
     choice = request.form['choice']
 
     if choice == 'entreprise':
-        response_text = "Bienvenue dans l'option entreprise!"
+        response_text = "Choisissez l'une des options ci-dessous :"
     elif choice == 'association':
-        response_text = "Bienvenue dans l'option association!"
+        response_text = "Merci pour votre réponse, que souhaitez-vous faire ?"
+    elif choice == "J'ai un problème":
+        response_text = "D'accord, veuillez nous fournir plus de détails sur le problème que vous rencontrez."
+    elif choice == "Je souhaite publier une mission pour entreprise":
+        response_text = "Super ! Veuillez nous donner plus d'informations sur la mission que vous souhaitez publier."
+    elif choice == "Je souhaite être formé à l'utilisation de RSETime et des fonctionnalités proposées":
+        response_text = "Inscrivez vous à la prochaine démo des assos animée par notre équipe 👋 <a href=\"#\">démo des assos animée</a>"
     else:
-        response_text = "Je ne comprends pas votre choix."
+        response_text = "Je n'ai pas compris votre choix."
 
     return response_text
+
 
 
 
@@ -79,11 +86,6 @@ def get_response():
     if predefined_response is not None:
         return predefined_response
 
-    # Vérifier si l'utilisateur a choisi "entreprise" ou "association"
-    if user_input.lower() == "entreprise":
-        response_text = "Bienvenue dans l'option entreprise!"
-    elif user_input.lower() == "association":
-        response_text = "Welcome to the association option!"
     else:
         # Calculer la similarité entre l'entrée de l'utilisateur et les mots clés
         similarity = max(SequenceMatcher(None, user_input.lower(), keyword).ratio() for keyword in keyword_responses.keys())
@@ -118,9 +120,6 @@ def get_response():
     response_text = emoji.emojize(response_text)
 
     return response_text
-
-# ...
-
 
 if __name__ == '__main__':
     app.run(debug=True)
