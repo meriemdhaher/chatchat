@@ -1,67 +1,135 @@
-<div>
-  <!-- Chat Button -->
-  <button id="chat-button" (click)="openChatBot()" class="chat-closed mobile-size__medium">
-    <div class="buttonWave"></div>
-    <button type="button" id="button-body" data-testid="widgetButtonBody" class="chrome" tabindex="0" aria-label="Open chat widget">
-      <i class="material-icons type1 for-closed active" [style.color]="'rgb(255, 255, 255)'">
-        <svg id="ic_bubble" fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"></path>
-          <path d="M0 0h24v24H0z" fill="none"></path>
-        </svg>
-      </i>
-    </button>
-  </button>
-</div>
+<!-- chat.component.html -->
 
-<!-- Chatbox -->
-<div *ngIf="isActivateChat" class="chatbox">
-  <nav style=" background-color: #49a846; /* Couleur de fond des boutons */
-  color: #ffffff; /* Couleur du texte des boutons */
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;"
-  class="widget-background-panel" role="banner">RSE TIME CHAT</nav>
+<!-- Conteneur principal de la chatbox -->
+<div class="chat-board chatbot chat new trending"></div>
 
-  <!-- Chat Messages -->
-  <div class="message from">
-    HELLO 👋
-  </div>
+<div class="frame-content">
+  <!-- Conteneur de la chatbox avec la possibilité de minimiser -->
+  <div class="widget-position-right sidebar-position-right onlyBubble" id="chatContainer">
+    <!-- La chatbox elle-même -->
+    <div class="chat no-clip-path chrome moveFromRight-enter-done">
+      <!-- En-tête de la chatbox avec le logo et le titre -->
+      <div class="chat-header project-online" style="background-color: #009970;">
+        <div class="logo-and-title">
+          <!-- Logo et titre du chat -->
+          <div class="logo-and-title">
+            <img src="assets/logo_RSE.png" alt="Logo" style="width: 90px; height: auto; object-fit: contain; margin-right: 10px; border-radius: 30%;">
+            <h2 class="oneline" style="color: white; font-size: 24px; font-weight: 80;"><span>RSE TIME CHAT</span></h2>
+          </div>
+        </div>
 
-  <div class="message from">
-    You are
-  </div>
+        <!-- Bouton pour ouvrir/fermer le chat -->
+        <button id="chat-button" (click)="toggleChat()"></button>
 
-  <div class="message form">
-    <button (click)="clickEvent(ASSOCIATION_LABEL)"
-            class="suggestion-btn">ASSOCIATION</button> <br>
-    <br>
-    <button 
-    class="suggestion-btn"
-     (click)="clickEvent(ENTREPRISE_LABEL)">
-      ENTREPRISE
-    </button>
-  </div>
+        <!-- Conteneur du chat, peut être minimisé -->
+        <div id="chatContainer" class="chat-closed">
+          <!-- Contenu du chat -->
 
-  <!-- Existing message loop -->
-  <ng-container *ngFor="let message of messages">
-    <div class="message" [ngClass]="{ from: message.author === 'bot', to: message.author === 'user' }">
-      <span>{{ message.content }}</span>
+          <!-- Bouton pour minimiser le chat -->
+          <button id="minimize-button" (click)="minimizeChat()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF">
+              <path d="M0 0h24v24H0z" fill="none"/>
+              <path d="M6.29 6.29L12 12l-5.71 5.71a1 1 0 101.42 1.42L12 13.41l5.71 5.7a1 1 0 001.42-1.42L13.41 12l5.7-5.71a1 1 0 00-1.42-1.42L12 10.59l-5.71-5.7a1 1 0 00-1.42 1.42z"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Message indiquant que le chat est en ligne -->
+        <div class="offline-message" style="background-color: #ffffffc2;">
+          <span class="online">
+            <!-- Icône de statut -->
+            <div class="status-icon"></div>
+            <span>We are online</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Messages du chat -->
+      <div class="message-container" style="max-height: 300px; overflow-y: auto;">
+
+        <!-- Message de bienvenue du bot -->
+        <div class="avatar">
+          <img src="src\assets\avatar.jpg" alt="Avatar" class="small-avatar">
+        </div>
+        <div class="message from">
+          Hello 👋 <br> Welcome to RSE TIME!
+        </div>
+      
+
+      <!-- Message demandant à l'utilisateur son nom -->
+      
+        <div class="avatar">
+          <img src="src\assets\avatar.jpg" alt="Avatar" class="small-avatar">
+        </div>
+        <div class="message from">
+          You are?
+        </div>
+      
+    
+
+      <!-- Boutons de suggestion -->
+      <div class="suggestion-buttons">
+        <button (click)="clickEvent('ASSOCIATION')" class="suggestion-btn">ASSOCIATION</button>
+        <button (click)="clickEvent('ENTREPRISE')" class="suggestion-btn">ENTREPRISE</button>
+      </div>
+    
+
+      <!-- Bouton pour ouvrir le chat en version mobile 
+      <div id="chat-button" data-testid="widgetButton" class="chat-closed mobile-size__medium">
+        <div class="buttonWave"></div>
+        <button
+          type="button"
+          id="button-body"
+          data-testid="widgetButtonBody"
+          class="chrome"
+          tabindex="0"
+          aria-label="Open chat widget"
+          style="background: linear-gradient(135deg, rgb(42, 39, 218), rgb(0, 204, 255)); box-shadow: rgba(0, 77, 255, 0.5) 0px 4px 24px;">
+          <i class="material-icons type1 for-closed active" style="color: rgb(255, 255, 255);">
+            <svg id="ic_bubble" fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24"
+              xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path
+                d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0-2-.9-2-2V4c0-1.1-.9-2-2-2z"></path>
+              <path d="M0 0h24v24H0z" fill="none"></path>
+            </svg>
+          </i>
+        </button>
+      </div>
+    -->
+
+      <!-- Boucle pour afficher les messages -->
+      
+      <div *ngFor="let message of messages, let botResponse of botResponses">
+        <i class="bot-icon" *ngIf="message.author === 'bot'"></i>
+        <div class="message" [ngClass]="{ from: message.author === 'bot', to: message.author === 'user' }">
+          <span>{{ message.content }}</span>
+        </div>
+      </div>
+      <div class="suggestion-buttons" *ngIf="contextGlobal === 'ASSOCIATION' && !isLoading">
+        <button class="suggestion-btn" (click)="clickEvent('Je souhaite publier une mission')">{{choiceBtn.get('AA')}}</button>
+        <button class="suggestion-btn"(click)="clickEvent('J ai un probleme!')" >{{choiceBtn.get('BB')}}</button>
+      </div>
+     
+        <div *ngIf="contextGlobal === 'ENTREPRISE' && !isLoading" class="suggestion-buttons">
+          <button class="suggestion-btn" (click)="clickEvent('je veux m inscrire')" >{{choiceBtn.get('CC')}}</button>
+          <button class="suggestion-btn" (click)="clickEvent('J ai un probleme!')">{{choiceBtn.get('DD')}}</button>
+        </div>
+      </div>
+
+      <!-- Zone de saisie et bouton d'envoi -->
+    
+        <div class="custom_puding align-center" *ngIf="!isLoading">
+          <input mdbInput type="text" id="form1" class="form-control chat-input input-with-button" [(ngModel)]="userInput" placeholder="Type here..." (keydown.enter)="sendMessage()" />
+          <button class="send-btn" (click)="sendMessage()">
+            <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M21.158.222L2.568 11.815c-.8.498-.749 1.215.113 1.591l4.406 1.923 10.395-9.903c1.377-1.296 1.569-1.119.426.395L8.254 18.215v4.927c0 .953.5 1.141 1.113.418l4.473-5.282 5.055 2.207c.861.376 1.643-.092 1.736-1.04l1.81-18.404c.094-.949-.484-1.317-1.283-.819" fill="#888"></path>
+            </svg>
+          </button>
+        </div>
+        <ng-template #dialogInfo>
+          <span class="float-right">Total messages: {{ messages.length }}</span>
+        </ng-template>
+      
     </div>
-  </ng-container>
-
-  <div class="flex-container"  *ngIf="!isLoading">
- <!-- Input and Send Button -->
- <input mdbInput type="text" 
-        id="form1" 
-        class="form-control" 
-        [(ngModel)]="value" 
-        (keyup.enter)="sendMessage()" 
-        type="text" 
-        placeholder="Type here"/>
-
- <button class="send-btn" 
-         (click)="sendMessage()"> 
-         Send 
-</button>
   </div>
 </div>
