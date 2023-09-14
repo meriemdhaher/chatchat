@@ -2,6 +2,43 @@
 <html>
 <head>
     <style>
+        .enabled {
+            border: 2px solid #009970; /* Ajoutez votre style de bordure */
+            pointer-events: auto; /* Réactivez les événements pointer */
+        }
+        
+        /* CSS pour les boutons avec des triangles */
+.options-container ul {
+    list-style: none;
+
+}
+
+.options-container ul li {
+    margin: 10px 0;
+    position: relative;
+}
+
+.options-container button {
+    background-color: #00000000;
+    color: #009970;
+    border: ridge;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    position: relative;
+    transition: background-color 0.3s;
+}
+
+.options-container button:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent #007bff;
+}
         /* Alignement du message de bienvenue */
         .message {
             justify-content: flex-start;
@@ -753,12 +790,22 @@
                 <div id="chat-display">
                     
                 </div>
+                <div id="end-chat-notification" style="display: none;text-align: center;" class="end-chat-notification">
+                    <div class="centered" >
+                        <p>Votre chat est terminé.</p>
+                        <button id="restart-chat-link" class="chat-restart-button">Pour commencer un nouveau chat, cliquez ici.</button>
+                    </div>
+                </div>
+                
+                
+                
                 <div class="user-input">
-                    <input type="text" id="chat-input" placeholder="Saisissez votre message...">
+                    <input type="text" id="chat-input" placeholder="Saisissez votre message..." disabled>
                     <button class="send-button" id="send-button">
                         <img src="{{ url_for('static', filename='send-icon.png') }}" alt="Send">
                     </button>
                 </div>
+                
             </div>
         
                 <div class="input-group">
@@ -778,7 +825,7 @@
             </button>
         </div>
     </div>
-    <script>
+<script>
         const chatDisplay = document.getElementById('chat-display');
         const chatInput = document.getElementById('chat-input');
         const chatButton = document.getElementById('chat-button');
@@ -786,7 +833,7 @@
         const minimizeButton = document.getElementById('minimize-button');
         const sendButton = document.getElementById('send-button');
         const userId = '{{ user_id }}'; // Remplacez par la valeur réelle
-        
+        chatInput.disabled = true;
         chatButton.addEventListener('click', () => {
             chatContainer.classList.add('open');
             chatButton.classList.add('clicked');
@@ -800,6 +847,7 @@
                 hideChoiceButtons();
                 appendMessage('You', 'Entreprise', false);
                 sendChoice('entreprise');
+                chatInput.disabled = true; // Désactiver l'entrée utilisateur lorsque les boutons sont affichés
             });
             buttonsDiv.appendChild(entrepriseButton);
         
@@ -830,7 +878,7 @@
                 sendButton.classList.remove('svgsent');
             }
         });
-        
+            
         let isEnterPressed = false;
 
         chatInput.addEventListener('keypress', (event) => {
@@ -881,19 +929,30 @@ associationButton.addEventListener('click', () => {
     appendMessage('You', 'Association', false);
     sendChoice('association');
 });
+let associationChoiceMade = false; // Variable pour suivre si le choix "Association" a été fait
+
+// En dehors de la fonction sendChoice(choice)
+associationButton.addEventListener('click', () => {
+    if (!associationChoiceMade) {
+        associationChoiceMade = true;
+        hideChoiceButtons();
+        appendMessage('You', 'Association', false);
+        sendChoice('association');
+    }
+});
+
 function sendChoice(choice) {
     hideChoiceButtons(); // Enlever les boutons de choix
 
-    // Traiter le choix de l'utilisateur
     if (choice === 'association') {
-        // Créer le message de suivi pour l'association
+
         const followUpMessage = createBotMessage(
             'VERMEG',
             "Merci pour votre réponse, que souhaitez-vous faire ?"
         );
         chatDisplay.appendChild(followUpMessage);
+      
 
-        // Afficher les options pour l'association
         const optionsDiv = document.createElement('div');
         optionsDiv.classList.add('options-container');
 
@@ -901,7 +960,15 @@ function sendChoice(choice) {
         option1Button.textContent = "J'ai un problème";
         option1Button.addEventListener("click", () => {
             optionsDiv.remove();
-            sendChoice("J'ai un problème");
+            // Supprimez le dernier message utilisateur
+            const lastUserMessage = document.querySelector('.user:last-child');
+            if (lastUserMessage) {
+                lastUserMessage.remove();
+            }
+            // Ajoutez le choix de l'utilisateur en tant que message utilisateur
+            appendMessage('You', "J'ai un problème", false);
+
+            sendChoice("J'ai un problème, besoin d'aide sur RSETime");
             const problemMessage = createBotMessage(
                 'VERMEG',
                 "D'accord, veuillez nous fournir plus de détails sur le problème que vous rencontrez."
@@ -909,18 +976,24 @@ function sendChoice(choice) {
             chatDisplay.appendChild(problemMessage);
             const linkMessage = createBotMessage(
                 'VERMEG',
-                '<a href="#">>Demo des assos animée</a>'
+                '<a href="#">Demo des assos animée</a>'
             );
+            
             chatDisplay.appendChild(linkMessage);
+                // Appeler la fonction endChat() ici pour mettre fin à la conversation
+    endChat();
         });
 
         optionsDiv.appendChild(option1Button);
-
+    
         const option2Button = document.createElement("button");
-        option2Button.textContent = "Je souhaite publier une mission pour entreprise";
+        option2Button.textContent = "Je souhaite publier une mission";
         option2Button.addEventListener("click", () => {
             optionsDiv.remove();
-            sendChoice("Je souhaite publier une mission pour entreprise");
+            // Ajoutez le choix de l'utilisateur en tant que message utilisateur
+            appendMessage('You', "Je souhaite publier une mission", false);
+
+            // Ajoutez la réponse du bot à la suite de ce message utilisateur
             const problemMessage = createBotMessage(
                 'VERMEG',
                 "Super ! Veuillez nous donner plus d'informations sur la mission que vous souhaitez publier."
@@ -928,53 +1001,78 @@ function sendChoice(choice) {
             chatDisplay.appendChild(problemMessage);
             const linkMessage = createBotMessage(
                 'VERMEG',
-                '<a href="#">>Demo des assos animée</a>'
+                '<a href="#">Demo des assos animée</a>'
             );
+           
             chatDisplay.appendChild(linkMessage);
+                // Appeler la fonction endChat() ici pour mettre fin à la conversation
+    endChat();
         });
 
         optionsDiv.appendChild(option2Button);
         const option3Button = document.createElement("button");
-        option3Button.textContent = "Je souhaite être formé à l'utilisation de RSETime et des fonctionnalités proposées";
+        option3Button.textContent = "Formation sur fonctionnalités proposées";
         option3Button.addEventListener("click", () => {
             optionsDiv.remove();
-            sendChoice("Je souhaite être formé à l'utilisation de RSETime et des fonctionnalités proposées");
-            const trainingMessage = createBotMessage(
+                        // Ajoutez le choix de l'utilisateur en tant que message utilisateur
+                        appendMessage('You', "Former à des fonctionnalités proposées", false);
+            // Ajoutez la réponse du bot à la suite de ce message utilisateur
+            const problemMessage = createBotMessage(
                 'VERMEG',
                 "Inscrivez vous à la prochaine démo des assos animée par notre équipe 👋 "
             );
-            chatDisplay.appendChild(trainingMessage);
+            chatDisplay.appendChild(problemMessage);
             const linkMessage = createBotMessage(
                 'VERMEG',
                 '<a href="#">Demo des assos animée</a>'
             );
+               
             chatDisplay.appendChild(linkMessage);
+                // Appeler la fonction endChat() ici pour mettre fin à la conversation
+    endChat();
         });
         
-        optionsDiv.appendChild(option3Button);
-        
+        // Ajoutez les boutons de choix à la liste
+        const optionsList = document.createElement('ul');
+        optionsList.appendChild(createListItem(option1Button));
+        optionsList.appendChild(createListItem(option2Button));
+        optionsList.appendChild(createListItem(option3Button));
+
+        optionsDiv.appendChild(optionsList);
+
         chatDisplay.appendChild(optionsDiv);
     }else if (choice === 'entreprise') {
-        // Créer les réponses du bot pour l'entreprise
         const responseMessage1 = createBotMessage(
             'VERMEG',
             "Merci de votre intérêt pour notre solution ! Laissez-nous vos coordonnées ci-dessous et un expert RSETime prendra contact avec vous rapidement."
         );
         const responseMessage2 = createBotMessage(
             'VERMEG',
-            '<a href="#">>Demo des assos animée</a>'
+            '<a href="#">Demo des assos animée</a>'
+            
         );
 
-        // Afficher les réponses du bot
         chatDisplay.appendChild(responseMessage1);
         chatDisplay.appendChild(responseMessage2);
+            // Appeler la fonction endChat() ici pour mettre fin à la conversation
+    endChat();
+
+
     }
+
+}
+
+function createListItem(element) {
+    const listItem = document.createElement('li');
+    listItem.appendChild(element);
+    return listItem;
 }
 
 
 
         
 function getBotResponse(choice) {
+    chatInput.disabled = true; // Désactive le champ de saisie pendant que le bot traite la réponse
     fetch('/getresponse', {
         method: 'POST',
         headers: {
@@ -989,6 +1087,11 @@ function getBotResponse(choice) {
             appendMessage('You', choice);
         }
         appendMessage('VERMEG', botResponse, true);
+    
+        // Ne pas réactiver le champ de saisie ici
+    
+        // Appeler la fonction pour terminer la conversation
+        endChat();
     })
     .catch(error => console.error(error));
 }
@@ -1013,6 +1116,111 @@ function getBotResponse(choice) {
             messageDiv.appendChild(textElement);
             return messageDiv;
         }
+        function initChat() {
+            // Effacer les messages précédents de la conversation
+            chatDisplay.innerHTML = '';
+                        // Afficher le message de bienvenue
+                        const welcomeMessage = document.createElement('div');
+                        welcomeMessage.classList.add('message', 'welcome');
+                        welcomeMessage.innerHTML = `
+                            <img src="static/avatar.jpg" alt="User">
+                            <span class="message-content">Bonjour 🖐 Merci pour votre visite !
+                                Comment notre équipe peut-elle vous aider ?
+                                Vous êtes ?</span>
+                        `;
+                        chatDisplay.appendChild(welcomeMessage);
+        
+            // Réafficher les boutons "Association" et "Entreprise"
+            const buttonsDiv = document.createElement('div');
+            buttonsDiv.classList.add('buttons-container');
+        
+            const entrepriseButton = document.createElement('button');
+            entrepriseButton.id = 'entreprise-button';
+            entrepriseButton.textContent = 'Entreprise';
+            entrepriseButton.addEventListener('click', () => {
+                hideChoiceButtons();
+                appendMessage('You', 'Entreprise', false);
+                sendChoice('entreprise');
+                chatInput.disabled = true; // Désactiver l'entrée utilisateur lorsque les boutons sont affichés
+            });
+            buttonsDiv.appendChild(entrepriseButton);
+        
+            const associationButton = document.createElement('button');
+            associationButton.id = 'association-button';
+            associationButton.textContent = 'Association';
+            associationButton.addEventListener('click', () => {
+                hideChoiceButtons();
+                appendMessage('You', 'Association', false);
+                sendChoice('association');
+                chatInput.disabled = true; // Désactiver l'entrée utilisateur lorsque les boutons sont affichés
+            });
+            buttonsDiv.appendChild(associationButton);
+        
+            chatDisplay.appendChild(buttonsDiv);
+        
+
+        
+            // Réinitialiser d'autres variables ou l'état de la conversation si nécessaire
+            associationChoiceMade = false;
+        }
+        
+        
+        function endChat() {
+            // Masquer le bouton de minimisation du chat
+            minimizeButton.style.display = 'none';
+        
+            // Afficher la notification de fin de conversation au centre
+            const endNotification = document.getElementById('end-chat-notification');
+            endNotification.style.display = 'block';
+        
+            // Désactiver la saisie de l'utilisateur
+            chatInput.disabled = true;
+        
+            // Supprimer les boutons de choix
+            hideChoiceButtons();
+        
+            // Défiler vers le bas pour afficher la notification
+            chatDisplay.scrollTop = chatDisplay.scrollHeight;
+        
+            // Ajouter un gestionnaire d'événement pour recommencer la discussion
+            const restartChatLink = document.getElementById('restart-chat-link');
+            restartChatLink.addEventListener('click', () => {
+                // Réinitialiser la conversation en supprimant le message "Chat terminé"
+                endNotification.style.display = 'none';
+        
+                // Réactiver la saisie de l'utilisateur
+                chatInput.disabled = true;
+        
+                // Afficher à nouveau le bouton de minimisation du chat
+                minimizeButton.style.display = 'block';
+        
+                // Réinitialiser la conversation en appelant initChat()
+                initChat();
+            });
+        }
+        
+        // Appelez initChat() au démarrage de la page pour initialiser la conversation
+        initChat();
+        
+        
+
+        
+        function handleUserChoice(choice) {
+            hideChoiceButtons(); // Masquer les boutons de choix
+        
+            if (choice === "Faites votre choix") {
+                // Rien à faire ici, nous avons déjà affiché le message initial
+            } else {
+                appendMessage('You', choice, false);
+                // Ajoutez la logique pour gérer le choix ici
+            }
+        
+            // Une fois que vous avez traité la réponse de l'utilisateur, appelez la fonction pour obtenir la réponse du bot
+            getBotResponse(choice);
+        }
+        
+        
+        
         
     </script>
     

@@ -1,120 +1,54 @@
 from flask import Flask, render_template, request
-from chatterbot import ChatBot
-from chatterbot.trainers import ListTrainer
 from fuzzywuzzy import fuzz
 import emoji
-from difflib import SequenceMatcher
-from pymongo import MongoClient
-
-client = MongoClient('mongodb://localhost:27017')  # Modifier l'URL de connexion si nécessaire
-db = client['mydatabase']  # Remplacez 'mydatabase' par le nom de votre base de données
-session_collection = db['sessions']
+from chatterbot import ChatBot
+from chatterbot.trainers import ChatterBotCorpusTrainer
 
 app = Flask(__name__)
+# Créez une instance de ChatBot
+bot = ChatBot('MyBot')
 
-# Entraînez le chatbot en dehors de l'application Flask
-def train_chatbot():
-    chatbot = ChatBot("Chatbot")
+# Entraînez le bot en utilisant les corpus de formation en anglais
+trainer = ChatterBotCorpusTrainer(bot)
+trainer.train('chatterbot.corpus.english')
 
-    trainer = ListTrainer(chatbot)
-    trainer.train([
-        "Hi",
-        "Hi! Welcome to vermeg 🤗 How can I assist you?",
-        "Hello",
-        "Hello! Welcome to vermeg 🤗 How can I assist you?",
-        # Ajoutez d'autres exemples d'entraînement ici
-    ])
 
-    return chatbot
-
-chatbot_instance = train_chatbot()
-
-# Liste de mots clés que le chatbot peut reconnaître
+# Réponses prédéfinies pour les choix de l'utilisateur
 keyword_responses = {
-    "hi": "Hi! Welcome to vermeg 🤗 How can I assist you?",
-    "hello": "Hello! Welcome to vermeg 🤗 How can I assist you?",
-    # Ajoutez d'autres mots clés et réponses ici
+    "association": "Merci pour votre réponse, que souhaitez-vous faire ?",
+    "entreprise": "Choisissez l'une des options ci-dessous :",
+    "J'ai un problème": "D'accord, veuillez nous fournir plus de détails sur le problème que vous rencontrez.",
+    "Je souhaite publier une mission pour entreprise": "Super ! Veuillez nous donner plus d'informations sur la mission que vous souhaitez publier.",
+    "Je souhaite être formé à l'utilisation de RSETime et des fonctionnalités proposées": "Inscrivez-vous à la prochaine démo des assos animée par notre équipe 👋 <a href=\"#\">démo des assos animée</a>"
 }
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# ...
-
 @app.route('/make_choice', methods=['POST'])
 def make_choice():
     choice = request.form['choice']
-
-    if choice == 'entreprise':
-        response_text = "Choisissez l'une des options ci-dessous :"
-    elif choice == 'association':
-        response_text = "Merci pour votre réponse, que souhaitez-vous faire ?"
-    elif choice == "J'ai un problème":
-        response_text = "D'accord, veuillez nous fournir plus de détails sur le problème que vous rencontrez."
-    elif choice == "Je souhaite publier une mission pour entreprise":
-        response_text = "Super ! Veuillez nous donner plus d'informations sur la mission que vous souhaitez publier."
-    elif choice == "Je souhaite être formé à l'utilisation de RSETime et des fonctionnalités proposées":
-        response_text = "Inscrivez vous à la prochaine démo des assos animée par notre équipe 👋 <a href=\"#\">démo des assos animée</a>"
-    else:
-        response_text = "Je n'ai pas compris votre choix."
-
+    response_text = keyword_responses.get(choice, "Je n'ai pas compris votre choix.")
     return response_text
-
-
-
 
 @app.route('/getresponse', methods=['POST'])
 def get_response():
     user_input = request.form['user_input']
-    user_id = request.form["user_id"]
 
-    # Charger la session utilisateur depuis MongoDB
-    session_data = []
-    session_document = session_collection.find_one({'user_id': user_id})
-
-    if session_document:
-        session_data = session_document['session_data']
-
-    # Recherchez la réponse prédéfinie
-    predefined_response = None
-    for item in session_data:
-        if item['user_input'].lower() == user_input.lower():
-            predefined_response = item['bot_response']
-            break
-
-    if predefined_response is not None:
-        return predefined_response
-
+    # Calculer la similarité entre l'entrée de l'utilisateur et les réponses prédéfinies
+    similarity_scores = {keyword: fuzz.ratio(user_input.lower(), keyword.lower()) for keyword in keyword_responses.keys()}
+    
+    # Trouver la réponse prédéfinie avec la plus grande similarité
+    max_similarity_keyword = max(similarity_scores, key=similarity_scores.get)
+    max_similarity_score = similarity_scores[max_similarity_keyword]
+    
+    if max_similarity_score > 70:
+        response_text = keyword_responses[max_similarity_keyword]
     else:
-        # Calculer la similarité entre l'entrée de l'utilisateur et les mots clés
-        similarity = max(SequenceMatcher(None, user_input.lower(), keyword).ratio() for keyword in keyword_responses.keys())
-
-        # Si la similarité est suffisamment élevée, accepter la réponse associée au mot clé
-        if similarity > 0.8:  # Augmentez ce seuil pour réduire les correspondances
-            return keyword_responses[max(keyword_responses, key=lambda keyword: fuzz.ratio(keyword, user_input.lower()))]
-
-        # Obtenir la réponse du chatbot
-        response = chatbot_instance.get_response(user_input)
-
-        # Calculer la similarité entre l'entrée de l'utilisateur et la réponse du chatbot
-        similarity = fuzz.ratio(user_input.lower(), str(response).lower())
-
-        # Si la similarité est suffisamment élevée, accepter la réponse du chatbot
-        if similarity > 70 and response.confidence > 0.7:
-            response_text = str(response)
-        else:
-            response_text = user_input  # Utiliser la même question que l'utilisateur a saisie
-
-    # Ajouter l'interaction utilisateur à la liste session_data
-    session_data.append({'user_input': user_input, 'bot_response': response_text})
-
-    # Mettre à jour ou insérer les données de session dans MongoDB
-    session_collection.update_one(
-        {'user_id': user_id},
-        {'$set': {'session_data': session_data}},
-        upsert=True
-    )
+        response_text = user_input  # Utiliser la même question que l'utilisateur a saisie
+    #Obtenir une réponse du bot en utilisant ChatterBot
+    bot_response = bot.get_response(user_input)
 
     # Convertir les emojis en texte
     response_text = emoji.emojize(response_text)
