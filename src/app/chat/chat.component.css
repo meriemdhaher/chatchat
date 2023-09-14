@@ -1,4 +1,6 @@
-
+.message-space {
+  margin-bottom: 1px; /* Vous pouvez ajuster la valeur selon vos besoins */
+}
 #message-container {
   max-height: 300px; /* Ajustez la hauteur maximale à votre convenance */
   overflow-y: auto; /* Activez la barre de défilement verticale si nécessaire */
@@ -71,10 +73,10 @@ button[type="submit"]:hover {
 }
 
 
-.avatar {
-  width: 40px; /* Ajustez la largeur souhaitée */
-  height: 40px; /* Ajustez la hauteur souhaitée */
-  border-radius: 50%; /* Rend l'image circulaire */
+.small-avatar{
+  width: 25px; /* Ajustez la largeur souhaitée */
+  height: 25px; /* Ajustez la hauteur souhaitée */
+  border-radius: 60%; /* Rend l'image circulaire */
   object-fit: cover; /* Ajuste le mode d'ajustement de l'image */
   margin-right: 10px; /* Ajout d'une marge entre l'avatar et le message */
 }

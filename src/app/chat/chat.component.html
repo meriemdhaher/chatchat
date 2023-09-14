@@ -49,32 +49,31 @@
 
         <!-- Message de bienvenue du bot -->
         <div class="avatar">
-          <img src="src\assets\avatar.jpg" alt="Avatar" class="small-avatar">
+          <img src="assets\avatar.jpg" alt="Avatar" class="small-avatar">
         </div>
         <div class="message from">
           Hello 👋 <br> Welcome to RSE TIME!
         </div>
-      
+        
+        <div class="message-space"></div>
 
       <!-- Message demandant à l'utilisateur son nom -->
-      
-        <div class="avatar">
-          <img src="src\assets\avatar.jpg" alt="Avatar" class="small-avatar">
-        </div>
         <div class="message from">
           You are?
         </div>
       
-    
+        <div class="message-space"></div>
+
 
       <!-- Boutons de suggestion -->
       <div class="suggestion-buttons">
         <button (click)="clickEvent('ASSOCIATION')" class="suggestion-btn">ASSOCIATION</button>
         <button (click)="clickEvent('ENTREPRISE')" class="suggestion-btn">ENTREPRISE</button>
       </div>
-    
+      <div class="message-space"></div>
 
-      <!-- Bouton pour ouvrir le chat en version mobile 
+
+      <!-- Bouton pour ouvrir le chat en version mobile  -->
       <div id="chat-button" data-testid="widgetButton" class="chat-closed mobile-size__medium">
         <div class="buttonWave"></div>
         <button
@@ -95,16 +94,24 @@
           </i>
         </button>
       </div>
-    -->
+   
 
       <!-- Boucle pour afficher les messages -->
+      <div *ngFor="let message of messages, let botResponse of botResponses" >
+
+  <img *ngIf="message.author === 'bot'" src="assets\avatar.jpg" alt="Avatar" class="small-avatar">
+  <div class="message" [ngClass]="{ from: message.author === 'bot', to: message.author === 'user' }">
+    <!-- ajout d'icone de user-->
+    <span>{{ message.content }}</span>
+    <span [innerHTML]="message.content"></span>
+    <div class="message-space"></div>
+  </div>
+  <!-- Afficher le lien lorsque le message "JE SOUHAITE PUBLIER UNE MISSION" est affiché -->
+  <div *ngIf="message.content === 'Please fill out this form <a href=\'https://www.vermeg.com/fr/contactez-nous/\'>here2</a>'">
+  </div>
+</div>
+
       
-      <div *ngFor="let message of messages, let botResponse of botResponses">
-        <i class="bot-icon" *ngIf="message.author === 'bot'"></i>
-        <div class="message" [ngClass]="{ from: message.author === 'bot', to: message.author === 'user' }">
-          <span>{{ message.content }}</span>
-        </div>
-      </div>
       <div class="suggestion-buttons" *ngIf="contextGlobal === 'ASSOCIATION' && !isLoading">
         <button class="suggestion-btn" (click)="clickEvent('Je souhaite publier une mission')">{{choiceBtn.get('AA')}}</button>
         <button class="suggestion-btn"(click)="clickEvent('J ai un probleme!')" >{{choiceBtn.get('BB')}}</button>
@@ -119,6 +126,7 @@
       <!-- Zone de saisie et bouton d'envoi -->
     
         <div class="custom_puding align-center" *ngIf="!isLoading">
+          
           <input mdbInput type="text" id="form1" class="form-control chat-input input-with-button" [(ngModel)]="userInput" placeholder="Type here..." (keydown.enter)="sendMessage()" />
           <button class="send-btn" (click)="sendMessage()">
             <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

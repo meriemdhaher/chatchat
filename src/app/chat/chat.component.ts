@@ -35,6 +35,10 @@ botResponses:[] | undefined;
   chatContainerRef: any;
   isChatOpen: boolean | undefined;
   userInput: string = '';
+  messageMap: any;
+  combinedMessages: any[] = [];
+
+
 
   constructor(public chatService: ChatService) { }
 
@@ -42,8 +46,10 @@ botResponses:[] | undefined;
   ngOnInit() {
     this.chatService.conversation.subscribe((val) => {
       console.log('val ', val)
-    this.messages = this.messages.concat(val);
-    this.chatService.isLoading.subscribe((loadingFlag) => {
+      this.messages = this.messages.concat(val.map(message => ({
+        ...message,
+        contextGlobal: message.contextGlobal || 'valeur par défaut'
+      })));    this.chatService.isLoading.subscribe((loadingFlag) => {
       this.isLoading = loadingFlag;
 
     })
@@ -78,7 +84,11 @@ minimizeChat() {
 
   sendMessage(): void {
     if (this.userInput) {
-      this.messages.push({ author: 'user', content: this.userInput, context: this.contextGlobal});
+      this.messages.push({
+        author: 'user', content: this.userInput, context: this.contextGlobal,
+        contextGlobal: undefined
+        
+      });
       this.chatService.getBotAnswer(this.value, this.contextGlobal);
 
     if(this.value !== '') {
