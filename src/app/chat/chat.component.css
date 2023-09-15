@@ -1,3 +1,71 @@
+/*chatbox*/
+.chat {
+  display: flex;
+  flex-direction: column;
+  width: 372px;
+  position: fixed;
+  bottom: 80px;
+  border-radius: 16px;
+  pointer-events: auto;
+  box-shadow: rgba(0, 18, 46, 0.16) 0px 8px 22px 0px;
+  overflow: hidden;
+  z-index: 100; /* Augmentez la valeur du z-index pour être au-dessus de l'icône de la bulle */
+  right: 80px; /* Ajustez la valeur pour déplacer le chat horizontalement vers la gauche */
+  background-color: white;
+  margin-right: 20px; /* Marge entre le chat et l'icône de la bulle */
+}
+/* Styles pour les boutons de suggestion */
+
+.suggestion-btn2 {
+  border: 2px solid #009970; /* Couleur du contour vert */
+  background-color: white; /* Fond blanc */
+  color: #009970; /* Couleur du texte verte */
+  display: block; /* Afficher les boutons en bloc (un en dessous de l'autre) */
+  margin-bottom: 10px; /* Espacement entre les boutons */
+  padding: 8px 12px; /* Remplissage intérieur des boutons */
+  border-radius: 5px; /* Coins arrondis */
+  cursor: pointer; /* Curseur de la main au survol */
+}
+.suggestion-btn2:hover {
+  background-color:transparent; /* Darker green on hover */
+}
+
+#minimize-button {
+  position: absolute;
+  top: 10px; /* Ajustez la position verticale du bouton */
+  right: 10px; /* Ajustez la position horizontale du bouton */
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 2; /* Assurez-vous que le bouton est au-dessus de la chatbox */
+}
+
+#minimize-button i {
+  font-size: 20px; /* Ajustez la taille de l'icône selon vos besoins */
+  color: #fff; /* Couleur de l'icône */
+}
+
+.chat-closed {
+  display:flex; /* Pour cacher la chatbox fermée */
+  bottom: 10; /* Ajustez la position verticale lorsque fermé */
+  right: 50px; /* Ajustez la position horizontale lorsque fermé */
+  border-radius: 10px; /* Ajoutez des coins arrondis */
+  z-index:1; /* Assurez-vous que la chatbox fermée est en dessous du bouton */
+  transition: height 0.3s ease-in-out; /* Ajoutez une transition fluide */
+}
+
+.chat-open {
+  background-color: white; /* Fond blanc */
+  width: 300px; /* Largeur de la chatbox ouverte */
+  height: 400px; /* Hauteur de la chatbox ouverte */
+  /* Ajoutez d'autres styles selon vos besoins */
+}
+
+
+
+
+
+
 .message-space {
   margin-bottom: 1px; /* Vous pouvez ajuster la valeur selon vos besoins */
 }
@@ -41,20 +109,6 @@
 .logo-and-title {
   display: flex;
   align-items: center; /* Centre verticalement */
-}
-#minimize-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 10px; /* Espace autour du bouton */
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-#minimize-button i {
-  font-size: 7px; /* Ajustez la taille de l'icône selon vos besoins */
-  color: #fff; /* Couleur de l'icône */
 }
 
 
@@ -191,17 +245,6 @@ i {
 }
 
 /* Styles for the chatbox */
-#chatbox {
-  width: 300px;
-  height: 60vh;
-  margin: 5px 5px 7px;
-  position: fixed;
-  bottom: 100px;
-  right: 10px;
-  border: 5px solid #f1f1f1;
-  overflow-y: auto;
-  border-radius: 0; /* Carré le chatbox en mettant la valeur à 0 */
-}
 
 nav {
   background-color: #03ac85; /* Couleur verte */
@@ -355,22 +398,6 @@ nav span {
   justify-content: center;
 }
 
-.suggestion-btn { /*initial*/
-  padding: 5px;
-  font-size: 12px;
-  width: 120px;
-  text-align: center;
-  background-color: #03ac85; /* Green background color */
-  color: #fff; /* White text color */
-  border: none;
-  border-radius: 20px; /* Rounded corners */
-  cursor: pointer;
-  border-radius: 0%;
-}
-
-.suggestion-btn:hover {
-  background-color: #009970 /* Darker green on hover */
-}
 
 /*imported*/
 
@@ -598,25 +625,6 @@ body:not(.mobile) #button button:not(.disabled):focus i.type1::after {
 /* Chat Container Styles */
 .chat.chrome, .start-group.chrome {
     box-shadow: rgba(0, 18, 46, 0.16) 0px 8px 36px 0px;
-    
-}
-/*chatbox*/
-.chat {
-   
-    display: flex;
-    flex-direction: column;
-    width: 372px;
-    position: fixed;
-    bottom: 26px;
-    border-radius: 16px;
-    pointer-events: auto;
-    box-shadow: rgba(0, 18, 46, 0.16) 0px 8px 22px 0px;
-    overflow: hidden;
-    z-index: 999;
-    right: 100spx;
-    left: auto;
-    background-color: white;
-    margin-right: 20px;
     
 }
 

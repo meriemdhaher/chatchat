@@ -24,22 +24,23 @@ export class ChatService {
 
   
   // TODO : create ClietHttp service to consule back response
+  
 
 
   
-  messageMap: any = {
+  messageMap: { [key: string]: string } = {
     "HI": "Hello!",
     "ASSOCIATION": 
-      "Welcome to ASSOCIATION section, how can we assist you?.",
+      "Merci pour votre réponse.Choisissez l'une des options ci-dessous.",
     //des boutons "j'ai un probleme", "je souhaite publier une mission" 
     // un message où se trouve un lien pour écrire ses cordonées  
     "ENTREPRISE": 
-      "Welcome to ENTREPRISE section, how can we assist you?.",
+      "Merci pour votre réponse.Choisissez l'une des options ci-dessous.",
     //des boutons "j'ai un probleme", "je souhaite publier une mission" 
     //  un message où se trouve un lien pour écrire ses cordonées  
-    "JE SOUHAITE PUBLIER UNE MISSION": "Please fill out this form <a href='https://www.vermeg.com/fr/contactez-nous/'>here1</a>",
-    "JE VEUX M INSCRIRE":"Please fill out this form <a href='https://www.vermeg.com/fr/contactez-nous/'>here2</a>",
-    "J AI UN PROBLEME!":" We will connect you with an expert from the team.",
+    "JE SOUHAITE PUBLIER UNE MISSION": "Super ! Pour nous donner plus d'informations sur la mission que vous souhaitez publier,Veuillez remplissez ce formulaire <a href='https://www.vermeg.com/fr/contactez-nous/'>ici</a>",
+    "JE VEUX M INSCRIRE":"Super! Repmlissez ce formulaire afin de traiter votre demande <a href='https://www.vermeg.com/fr/contactez-nous/'>ici</a>",
+    "J AI UN PROBLEME!":" On va vous mettre en catact avec l'un de nos agents .",
     "What is RSE?": "Corporate Social Responsibility (CSR) / Responsabilité Sociale des Entreprises (RSE): This is a business approach that aims to contribute positively to society and the environment. It involves companies taking responsibility for their impact on various aspects of society, including economic, social, and environmental aspects. CSR or RSE initiatives might include ethical business practices, sustainability efforts, community engagement, and more.",
     "Tell me more about your platform and your interests.": "We are a platform that connects associations and businesses. We have 17 axes.",
     "More": "To learn more details, we will connect you with one of our experts. Please send us your email for us to contact you as soon as possible.",
