@@ -46,6 +46,7 @@ export class ChatComponent implements OnInit {
   constructor(public chatService: ChatService) { }
 
   ngOnInit() {
+    this.isChatOpen = !this.isChatOpen;
     this.chatService.conversation.subscribe((val) => {
       console.log('val ', val)
       this.messages = this.messages.concat(val.map(message => ({

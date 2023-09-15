@@ -106,7 +106,7 @@
   <div class="message" [ngClass]="{ from: message.author === 'bot', to: message.author === 'user' }">
     <!-- ajout d'icone de user-->
     <span>{{ message.content }}</span>
-    <span [innerHTML]="message.content"></span>
+    <!-- <span [innerHTML]="message.content"></span> -->
     <div class="message-space"></div>
   </div>
   <!-- Afficher le lien lorsque le message "JE SOUHAITE PUBLIER UNE MISSION" est affiché -->
